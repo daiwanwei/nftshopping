@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nftshopping.conf
+    links:
+      - store:store
+      - item:item
+
+  store:
+    image: nftshopping-store-api:latest
+    environment:
+      - GO_OPTS=-env=dev
+    ports:
+      - "8080:8080"
+    links:
+      - mongodb:mongodb
+
+  item:
+    image: nftshopping-item-api:latest
+    environment:
+      - NODE_OPTS=--env=dev
+    ports:
+      - "3000:3000"
+    links:
+      - mongodb:mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: ann
+      RABBITMQ_DEFAULT_PASS: 1213
+
