@@ -1,0 +1,3 @@
+[submodule "backend/nftshopping-item-api"]
+	path = backend/nftshopping-item-api
+	url = https://github.com/daiwanwei/nftshopping-item-api.git
